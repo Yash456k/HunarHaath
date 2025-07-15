@@ -7,29 +7,33 @@ export default function NavBar() {
   return (
     <div>
       <nav
-        class="navbar navbar-expand-lg"
-        style={{ backgroundColor: "#FDF5E6", color: "#1F2937" }}
+        className="navbar navbar-expand-lg sticky-top"
+        style={{
+          backgroundColor: "#FDF5E6",
+          color: "#1F2937",
+          fontSize: "20px",
+        }}
       >
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="/">
             <img
               src={logo}
               alt="Logo"
               width="55"
               height="55"
-              class="d-inline-block align-text-top"
+              className="d-inline-block align-text-top"
             />
           </a>
-          <a class="navbar-brand" href="/">
+          <a className="navbar-brand" href="/">
             <img
               src={hunarHaath}
               alt="hunarHaath"
               height="30"
-              class="d-inline-block align-text-top"
+              className="d-inline-block align-text-top"
             />
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
@@ -37,7 +41,7 @@ export default function NavBar() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
