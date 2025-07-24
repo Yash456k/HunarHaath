@@ -34,6 +34,7 @@ export default function NavBar() {
               className="d-inline-block align-text-top"
             />
           </Link>
+
           <button
             className="navbar-toggler"
             type="button"
@@ -45,6 +46,7 @@ export default function NavBar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
@@ -69,7 +71,7 @@ export default function NavBar() {
               </li>
             </ul>
 
-            <form className="d-flex" role="search">
+            <form className="d-flex ms-lg-3" role="search">
               <input
                 className="form-control me-2 rounded-pill border-dark"
                 type="search"
@@ -85,6 +87,37 @@ export default function NavBar() {
                 />
               </button>
             </form>
+
+            <div className="d-flex ms-lg-3">
+              <Link to="/login">
+                <button
+                  className="btn me-2"
+                  style={{
+                    backgroundColor: "#DC2626",
+                    color: "#FDF5E6",
+                    borderRadius: "20px",
+                    padding: "5px 15px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button
+                  className="btn"
+                  style={{
+                    backgroundColor: "#DC2626",
+                    color: "#FDF5E6",
+                    borderRadius: "20px",
+                    padding: "5px 15px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Sign Up
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

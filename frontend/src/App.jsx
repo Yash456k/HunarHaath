@@ -7,6 +7,8 @@ import Hero from "./components/Hero";
 import Products from "./components/Products";
 import Shop from "./components/Shop";
 import BecomeSeller from "./components/BecomeSeller";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/become-seller" element={<BecomeSeller />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </div>
       </Router>
