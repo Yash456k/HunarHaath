@@ -1,5 +1,7 @@
 import React from "react";
 import heroImg from "../assets/hero-bg.png";
+import Products from "./Products";
+import Footer from "./Footer";
 
 export default function Hero() {
   return (
@@ -20,6 +22,8 @@ export default function Hero() {
           </button>
         </div>
       </div>
+      <Products />
+      <Footer />
     </>
   );
 }

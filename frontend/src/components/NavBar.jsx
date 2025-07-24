@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import logo from "../assets/hunarHaath-logo.png";
 import hunarHaath from "../assets/hunarHaath.png";
 import search from "../assets/search.svg";
@@ -7,15 +8,16 @@ export default function NavBar() {
   return (
     <div>
       <nav
-        className="navbar navbar-expand-lg sticky-top"
+        className="navbar navbar-expand-lg z-1 position-fixed"
         style={{
+          width: "100%",
           backgroundColor: "#FDF5E6",
           color: "#1F2937",
           fontSize: "20px",
         }}
       >
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             <img
               src={logo}
               alt="Logo"
@@ -23,15 +25,15 @@ export default function NavBar() {
               height="55"
               className="d-inline-block align-text-top"
             />
-          </a>
-          <a className="navbar-brand" href="/">
+          </Link>
+          <Link className="navbar-brand" to="/">
             <img
               src={hunarHaath}
               alt="hunarHaath"
               height="30"
               className="d-inline-block align-text-top"
             />
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -46,30 +48,30 @@ export default function NavBar() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/">
                   Home
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/shop">
                   Shop
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/become-seller">
                   Become a seller
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/contact">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
 
             <form className="d-flex" role="search">
               <input
-                className="form-control me-2 rounded-pill"
+                className="form-control me-2 rounded-pill border-dark"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
