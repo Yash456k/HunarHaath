@@ -2,8 +2,10 @@ import React from "react";
 import heroImg from "../assets/hero-bg.png";
 import Products from "./Products";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="card text-bg-dark ">
@@ -17,6 +19,7 @@ export default function Hero() {
           <button
             className="btn my-3 btn-lg"
             style={{ backgroundColor: "#DC2626", color: "#FDF5E6" }}
+            onClick={() => navigate("/shop")}
           >
             Shop Now
           </button>
