@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config';
 
 export default function UserOrders() {
   const { user } = useAuth();
@@ -15,7 +16,7 @@ export default function UserOrders() {
       try {
         setLoading(true);
         setError('');
-        const res = await fetch(`http://localhost:4000/api/orders/user/${user._id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/orders/user/${user._id}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         const data = await res.json();

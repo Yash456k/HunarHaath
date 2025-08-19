@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { API_BASE_URL } from "../config";
 
 export default function BecomeSeller() {
   const [isSeller, setIsSeller] = useState(false);
@@ -35,7 +36,7 @@ const handleSubmit = async (e) => {
   const token = user?.token;
 
   try {
-    const res = await fetch("http://localhost:4000/api/users/become-seller", {
+    const res = await fetch(`${API_BASE_URL}/api/users/become-seller`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

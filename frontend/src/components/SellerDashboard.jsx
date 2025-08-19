@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function SellerDashboard() {
@@ -25,11 +26,11 @@ export default function SellerDashboard() {
       };
 
       // Fetch seller's products
-      const productsRes = await axios.get(`http://localhost:4000/api/products/seller/${user._id}`, config);
+      const productsRes = await axios.get(`${API_BASE_URL}/api/products/seller/${user._id}`, config);
       setProducts(productsRes.data);
 
       // Fetch orders for this seller
-      const ordersRes = await axios.get(`http://localhost:4000/api/orders/seller/${user._id}`, config);
+      const ordersRes = await axios.get(`${API_BASE_URL}/api/orders/seller/${user._id}`, config);
       setCustomOrders(ordersRes.data.acceptedCustomOrders || []);
       setPendingOrders(ordersRes.data.pendingCustomOrders || []);
       setRegularOrders(ordersRes.data.regularOrders || []);
@@ -44,7 +45,7 @@ export default function SellerDashboard() {
     try {
       const token = user?.token;
       await axios.put(
-        `http://localhost:4000/api/orders/${orderId}`,
+        `${API_BASE_URL}/api/orders/${orderId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -60,7 +61,7 @@ export default function SellerDashboard() {
     try {
       const token = user?.token;
       await axios.put(
-        `http://localhost:4000/api/orders/regular/${orderId}/status`,
+        `${API_BASE_URL}/api/orders/regular/${orderId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -74,7 +75,7 @@ export default function SellerDashboard() {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
         const token = user?.token;
-        await axios.delete(`http://localhost:4000/api/products/${productId}`, {
+        await axios.delete(`${API_BASE_URL}/api/products/${productId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         

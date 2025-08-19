@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { API_BASE_URL } from "../config";
 
 
 
@@ -22,7 +23,7 @@ export default function Login() {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post("http://localhost:4000/api/auth/login", formData);
+    const res = await axios.post(`${API_BASE_URL}/api/auth/login`, formData);
     // Persist login to sessionStorage to isolate per tab
     login(res.data, res.data.token, { persist: 'session' });
     navigate("/"); // Redirect to home page after successful login

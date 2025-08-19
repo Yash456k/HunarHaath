@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config';
 
 export default function CustomOrderPage() {
   const { user } = useAuth();
@@ -30,7 +31,7 @@ export default function CustomOrderPage() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch('http://localhost:4000/api/orders/custom', {
+      const res = await fetch(`${API_BASE_URL}/api/orders/custom`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

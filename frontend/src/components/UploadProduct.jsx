@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config';
 
 const UploadProduct = () => {
   const { user } = useAuth();
@@ -34,7 +35,7 @@ const UploadProduct = () => {
 
     try {
       const token = user?.token;
-      const response = await fetch('http://localhost:4000/api/products', {
+      const response = await fetch(`${API_BASE_URL}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -16,7 +17,7 @@ export default function Signup() {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const res = await axios.post("http://localhost:4000/api/auth/signup", formData);
+    const res = await axios.post(`${API_BASE_URL}/api/auth/signup`, formData);
     const { token, user } = res.data;
 
     // Save token to localStorage

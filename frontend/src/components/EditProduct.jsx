@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config';
 
 export default function EditProduct() {
   const { productId } = useParams();
@@ -12,7 +13,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/products/${productId}`, {
+        const res = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
           headers: { Authorization: `Bearer ${user?.token}` }
         });
         if (!res.ok) throw new Error('Failed to load product');
@@ -42,7 +43,7 @@ export default function EditProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:4000/api/products/${productId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user?.token}` },
         body: JSON.stringify({

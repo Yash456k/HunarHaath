@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +29,7 @@ export default function Cart() {
 
     try {
       const token = user?.token;
-      const response = await axios.post('http://localhost:4000/api/orders/custom', customOrder, {
+      const response = await axios.post(`${API_BASE_URL}/api/orders/custom`, customOrder, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -76,7 +77,7 @@ export default function Cart() {
         status: 'pending'
       };
 
-      const response = await axios.post('http://localhost:4000/api/orders/checkout', orderData, {
+      const response = await axios.post(`${API_BASE_URL}/api/orders/checkout`, orderData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
