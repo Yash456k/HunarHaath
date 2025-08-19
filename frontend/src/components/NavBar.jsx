@@ -58,7 +58,7 @@ export default function NavBar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3 text-center">
             <li className="nav-item">
               <Link className="nav-link" to="/">
                 Home
@@ -88,21 +88,107 @@ export default function NavBar() {
   </li>
 )}
 
-            <li className="nav-item">
+            <li className="nav-item ">
               <Link className="nav-link" to="/contact">Contact</Link>
+            </li>
+
+            {/* Mobile-only Cart link */}
+            <li className="nav-item d-lg-none">
+              {!user?.isSeller && (
+                <Link to="/cart" className="nav-link position-relative">
+                  <i className="fas fa-shopping-cart me-1"></i>
+                  Cart
+                  {getCartItemCount() > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{ backgroundColor: '#DC2626', fontSize: '0.7rem' }}>
+                      {getCartItemCount()}
+                    </span>
+                  )}
+                </Link>
+              )}
+            </li>
+
+            {/* Mobile-only Profile dropdown (styled like desktop with red pill trigger) */}
+            <li className="nav-item dropdown d-lg-none">
+              {user ? (
+                <>
+                  <button
+                    className="btn dropdown-toggle d-flex align-items-center mx-auto"
+                    id="mobileProfile"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{
+                      backgroundColor: '#DC2626',
+                      color: '#FDF5E6',
+                      borderRadius: '20px',
+                      padding: '6px 14px',
+                      fontWeight: 500
+                    }}
+                  >
+                    {user.name}
+                  </button>
+                  <ul
+                    className="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="mobileProfile"
+                    style={{
+                      backgroundColor: '#FDF5E6',
+                      border: '1px solid #DC2626',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <li>
+                      <Link
+                        className="dropdown-item hh-theme-hover"
+                        to="/profile"
+                        style={{ color: '#1F2937', padding: '10px 20px', borderBottom: '1px solid #e5e7eb' }}
+                        
+                      >
+                        <i className="fas fa-user me-2"></i>Profile
+                      </Link>
+                    </li>
+                    {user.isSeller && (
+                      <li>
+                        <Link
+                          className="dropdown-item hh-theme-hover"
+                          to="/seller-dashboard"
+                          style={{ color: '#1F2937', padding: '10px 20px', borderBottom: '1px solid #e5e7eb' }}
+                          
+                        >
+                          <i className="fas fa-store me-2"></i>Seller Dashboard
+                        </Link>
+                      </li>
+                    )}
+                    <li>
+                      <hr className="dropdown-divider" style={{ margin: '5px 0', borderColor: '#e5e7eb' }} />
+                    </li>
+                    <li className="px-2 pb-2">
+                      <button
+                        className="btn w-100"
+                        onClick={handleLogout}
+                        style={{ backgroundColor: '#DC2626', color: '#FDF5E6', borderRadius: '20px', padding: '8px 16px', fontWeight: 600 }}
+                      >
+                        <i className="fas fa-sign-out-alt me-2"></i>Logout
+                      </button>
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <div className="d-flex justify-content-center gap-2 px-3 py-2">
+                  <Link to="/login" className="btn btn-sm" style={{ backgroundColor: '#DC2626', color: '#FDF5E6', borderRadius: '20px', padding: '5px 15px', fontWeight: 500 }}>Login</Link>
+                  <Link to="/signup" className="btn btn-sm" style={{ backgroundColor: '#DC2626', color: '#FDF5E6', borderRadius: '20px', padding: '5px 15px', fontWeight: 500 }}>Sign Up</Link>
+                </div>
+              )}
             </li>
           </ul>
 
-          {/* Cart Icon (hidden for sellers) */}
+          {/* Desktop Cart Icon */}
           {!user?.isSeller && (
-            <div className="d-flex align-items-center me-3">
+            <div className="d-none d-lg-flex align-items-center mx-3">
               <Link to="/cart" className="position-relative">
-                <i className="fas fa-shopping-cart fs-5" style={{ color: "#1F2937" }}></i>
+                <i className="fas fa-shopping-cart fs-5" style={{ color: '#1F2937' }}></i>
                 {getCartItemCount() > 0 && (
-                  <span 
-                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill"
-                    style={{ backgroundColor: "#DC2626", fontSize: "0.7rem" }}
-                  >
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{ backgroundColor: '#DC2626', fontSize: '0.7rem' }}>
                     {getCartItemCount()}
                   </span>
                 )}
@@ -110,7 +196,8 @@ export default function NavBar() {
             </div>
           )}
 
-          <div className="d-flex ms-lg-3 align-items-center">
+          {/* Desktop Profile Dropdown */}
+          <div className="d-none d-lg-flex ms-lg-3 align-items-center">
             {user ? (
               <div className="dropdown">
                 <button

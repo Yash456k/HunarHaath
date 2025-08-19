@@ -1,0 +1,13 @@
+/* HunarHaath theme hover styles usable on desktop and mobile */
+.dropdown-menu .dropdown-item.hh-theme-hover:hover,
+.dropdown-menu .dropdown-item.hh-theme-hover:focus,
+.dropdown-menu .dropdown-item.hh-theme-hover:active {
+	background-color: #DC2626 !important;
+	color: #FDF5E6 !important;
+}
+
+/* Remove default focus outline color clash inside themed menu */
+.dropdown-menu .dropdown-item.hh-theme-hover:focus {
+	box-shadow: none;
+}
+
