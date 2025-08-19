@@ -1,6 +1,15 @@
 import React from "react";
+import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function ProductItems({ title, price, image, description }) {
+export default function ProductItems({ _id, title, price, image, description }) {
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+
+  const handleAddToCart = () => {
+    addToCart({ _id, title, price, image, description });
+  };
+
   return (
     <div
       className="card h-100 border border-dark-subtle"
@@ -20,13 +29,15 @@ export default function ProductItems({ title, price, image, description }) {
           <h6 className="card-text my-3">${price}</h6>
           <p className="card-text my-4">{description}</p>
         </div>
-        <a
-          href="#"
-          className="btn"
-          style={{ backgroundColor: "#DC2626", color: "#FDF5E6" }}
-        >
-          Buy Now
-        </a>
+        {!user?.isSeller && (
+          <button
+            onClick={handleAddToCart}
+            className="btn"
+            style={{ backgroundColor: "#DC2626", color: "#FDF5E6" }}
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );

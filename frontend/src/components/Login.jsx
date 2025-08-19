@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
-import { AuthContext } from "../App";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 
 
 
 export default function Login() {
-  const { setUser } = useContext(AuthContext);
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,17 +19,14 @@ export default function Login() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
     const res = await axios.post("http://localhost:4000/api/auth/login", formData);
-    localStorage.setItem("token", res.data.token); // Store the token
-setUser({ email: formData.email ,isSeller: res.data.isSeller}); 
-    // Redirect or update UI
+    // Persist login to sessionStorage to isolate per tab
+    login(res.data, res.data.token, { persist: 'session' });
     navigate("/"); // Redirect to home page after successful login
     console.log("Login successful:", res.data);
-    localStorage.setItem("user", JSON.stringify(res.data)); // Store user info
   } catch (err) {
     console.error(err.response?.data || err.message);
     alert("Login failed");

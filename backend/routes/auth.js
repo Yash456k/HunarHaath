@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      token: generateToken(user),
     });
   } catch (err) {
     console.error(err);
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      token: generateToken(user),
       isSeller: user.isSeller, // Include isSeller status
     });
   } catch (err) {

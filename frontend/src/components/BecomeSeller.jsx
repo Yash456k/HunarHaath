@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../App";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function BecomeSeller() {
   const [isSeller, setIsSeller] = useState(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const { user, updateUser } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     shopName: "",
   });
-  const {User,setUser} = useContext(AuthContext);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user.isSeller) {
-      setIsSeller(user.isSeller);
-      setUser(user)
+    if (user?.isSeller) {
+      setIsSeller(true);
     }
-    
     if (user) {
       setFormData((prev) => ({
         ...prev,
@@ -26,7 +23,7 @@ export default function BecomeSeller() {
         fullName: user.name || "",
       }));
     }
-  }, []);
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,11 +32,11 @@ export default function BecomeSeller() {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const token = localStorage.getItem("token"); // assuming you store token here
+  const token = user?.token;
 
   try {
-    const res = await fetch("http://localhost:4000/api/auth/become-seller", {
-      method: "POST",
+    const res = await fetch("http://localhost:4000/api/users/become-seller", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -54,20 +51,31 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    // ✅ Success: show message returned from backend
-    alert(data.message); // shows "User is now a seller"
+    // ✅ Success: update context and notify
+    updateUser({ isSeller: true });
+    alert("Your account is now a seller account.");
     setIsSeller(true);
-    navigate("/"); // Redirect to shop page after becoming a seller
+    navigate("/seller-dashboard");
   } catch (err) {
     console.error("Become seller error:", err);
 
   }
 };
 
-{if(isSeller) 
-  return ( <p>You are now a seller!</p>)
-  else 
-      return (
+  if (isSeller) {
+    return (
+      <div className="container my-5">
+        <div className="row justify-content-center">
+          <div className="col-md-8 text-center">
+            <h2 className="mb-3">You are now a seller!</h2>
+            <a href="/seller-dashboard" className="btn btn-dark">Go to Seller Dashboard</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div
       style={{
         backgroundColor: "#FFF8F0",
@@ -143,6 +151,4 @@ const handleSubmit = async (e) => {
       </form>
     </div>
   );
-}
- 
 }
