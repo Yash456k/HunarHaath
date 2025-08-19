@@ -1,200 +1,148 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../App";
 
 export default function BecomeSeller() {
+  const [isSeller, setIsSeller] = useState(false);
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
-    contact: "",
     email: "",
     shopName: "",
-    region: "",
-    bio: "",
-    password: "",
-    productImages: null,
   });
+  const {User,setUser} = useContext(AuthContext);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user.isSeller) {
+      setIsSeller(user.isSeller);
+      setUser(user)
+    }
+    
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        email: user.email || "",
+        fullName: user.name || "",
+      }));
+    }
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === "productImages" ? files : value,
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem("token"); // assuming you store token here
+
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/become-seller", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    alert("Thank you! We'll review your profile shortly.");
-  };
+    const data = await res.json();
 
-  return (
-    <div className="py-5" style={{ backgroundColor: "#FFF8F0" }}>
-      <div className="text-center mb-5">
-        <h1 className="fw-bold text-uppercase" style={{ color: "#78350F" }}>
-          🌿 Become a Seller on HunarHaath
-        </h1>
-        <p className="text-muted fs-5">
-          Empower your craft. Sell with 0% commission. Reach a wider world.
-        </p>
-      </div>
+    if (!res.ok) {
+      // Backend responded with error status
+      alert(data.message || "Something went wrong");
+      return;
+    }
 
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
-          <div
-            className="card border-0 shadow-lg"
-            style={{
-              borderRadius: "20px",
-              background:
-                "linear-gradient(to bottom right, #ffffff, #fef6e0, #fff8f0)",
-            }}
-          >
-            <div className="card-body p-5">
-              <h4
-                className="text-center fw-bold mb-4"
-                style={{ color: "#D97706" }}
-              >
-                Seller Registration Form
-              </h4>
+    // ✅ Success: show message returned from backend
+    alert(data.message); // shows "User is now a seller"
+    setIsSeller(true);
+    navigate("/"); // Redirect to shop page after becoming a seller
+  } catch (err) {
+    console.error("Become seller error:", err);
 
-              <form onSubmit={handleSubmit} className="row g-4">
-                {/* Full Name */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">Full Name *</label>
-                  <input
-                    type="text"
-                    className="form-control rounded-pill shadow-sm"
-                    name="fullName"
-                    required
-                    onChange={handleChange}
-                  />
-                </div>
+  }
+};
 
-                {/* Contact Number */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Contact Number *
-                  </label>
-                  <input
-                    type="tel"
-                    className="form-control rounded-pill shadow-sm"
-                    name="contact"
-                    required
-                    onChange={handleChange}
-                  />
-                </div>
+{if(isSeller) 
+  return ( <p>You are now a seller!</p>)
+  else 
+      return (
+    <div
+      style={{
+        backgroundColor: "#FFF8F0",
+        minHeight: "100vh",
+        padding: "40px 20px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          backgroundColor: "white",
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          width: "100%",
+          maxWidth: "450px",
+        }}
+      >
+        <h2 className="mb-4" style={{ textAlign: "center", color: "#333" }}>
+          Become a Seller
+        </h2>
 
-                {/* Email */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Email (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control rounded-pill shadow-sm"
-                    name="email"
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Shop Name */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Shop Name (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control rounded-pill shadow-sm"
-                    name="shopName"
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Region */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Region / City *
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control rounded-pill shadow-sm"
-                    name="region"
-                    required
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Product Images */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Upload Product Images
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control rounded-pill shadow-sm"
-                    name="productImages"
-                    multiple
-                    accept="image/*"
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Bio */}
-                <div className="col-12">
-                  <label className="form-label fw-semibold">Short Bio *</label>
-                  <textarea
-                    name="bio"
-                    className="form-control rounded-4 shadow-sm"
-                    rows="3"
-                    placeholder="Tell us about your craft (1-2 lines)..."
-                    required
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-
-                {/* Password */}
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">
-                    Set Password *
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control rounded-pill shadow-sm"
-                    name="password"
-                    required
-                    onChange={handleChange}
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="col-12">
-                  <button
-                    type="submit"
-                    className="btn w-100 py-3 fw-bold text-white rounded-pill"
-                    style={{
-                      background: "linear-gradient(to right, #D97706, #c45e00)",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                    }}
-                  >
-                    🚀 Start Selling on HunarHaath
-                  </button>
-                </div>
-
-                {/* Support */}
-                <div className="text-center mt-3">
-                  <small className="text-muted">
-                    Need help?{" "}
-                    <a
-                      href="/contact"
-                      className="fw-semibold text-decoration-none text-dark"
-                    >
-                      Contact Us
-                    </a>
-                  </small>
-                </div>
-              </form>
-            </div>
-          </div>
+        <div className="mb-3">
+          <label className="form-label">Full Name</label>
+          <input
+            type="text"
+            className="form-control"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            readOnly
+          />
         </div>
-      </div>
+
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="email"
+            className="form-control"
+            name="email"
+            value={formData.email}
+            readOnly
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">Shop Name</label>
+          <input
+            type="text"
+            className="form-control"
+            name="shopName"
+            value={formData.shopName}
+            onChange={handleChange}
+            placeholder="Enter your shop name"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-dark w-100"
+          style={{
+            backgroundColor: "#333",
+            borderColor: "#333",
+          }}
+        >
+          Submit Application
+        </button>
+      </form>
     </div>
   );
+}
+ 
 }
